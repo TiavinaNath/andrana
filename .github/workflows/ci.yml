@@ -20,7 +20,13 @@ jobs:
 
     env:
       AWS_REGION: eu-west-3
-      
+      zavatra: ${{
+              (github.event_name == 'pull_request' && github.base_ref == 'prod') && secrets.PROD_zavatra ||
+              (github.event_name == 'pull_request' && github.base_ref == 'preprod') && secrets.PREPROD_zavatra ||
+              (github.ref == 'refs/heads/prod') && secrets.PROD_zavatra ||
+              (github.ref == 'refs/heads/preprod') && secrets.PREPROD_zavatra
+              }}
+
 
     steps:
       - uses: actions/checkout@v4.1.6
